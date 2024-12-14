@@ -68,18 +68,8 @@ function animateParticles() {
         particle.update();
         particle.draw();
     });
-    if (!paused) requestAnimationFrame(animateParticles);
+    requestAnimationFrame(animateParticles);
 }
-
-// Gestion du bouton Pause/Play
-let paused = false;
-document.getElementById("pauseButton").addEventListener("click", () => {
-    paused = !paused;
-    if (!paused) {
-        createParticles(); // Réinitialiser les particules
-        animateParticles();
-    }
-});
 
 // Réagir au redimensionnement de la fenêtre
 window.addEventListener("resize", () => {
@@ -91,7 +81,6 @@ window.addEventListener("resize", () => {
 // Initialiser les particules
 createParticles();
 animateParticles();
-
 
 // Fonction pour ouvrir le client mail
 function openMail() {
@@ -111,3 +100,45 @@ function copyToClipboard(text) {
 function openInstagram() {
     window.open("https://www.instagram.com/aroun_mlk_/", "_blank");
 }
+
+// Variables pour détecter la position de la souris
+let mouseX = 0;
+let mouseY = 0;
+
+// Écouteur d'événement pour la position de la souris
+window.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+// Fonction pour repousser les particules de la souris
+function updateParticleDirection() {
+    particles.forEach((particle) => {
+        // Calculer la direction de la souris par rapport à la particule
+        let dx = particle.x - mouseX;
+        let dy = particle.y - mouseY;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Créer un "effet de repousser" en ajustant la vitesse des particules
+        if (distance < 150) { // Si la particule est proche de la souris
+            let angle = Math.atan2(dy, dx);
+            let force = (150 - distance) / 500; // Réduit l'intensité du repousser
+            particle.speedX += Math.cos(angle) * force;
+            particle.speedY += Math.sin(angle) * force;
+        }
+    });
+}
+
+// Mettre à jour les particules avec le mouvement de la souris
+function animateWithMouseEffect() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updateParticleDirection(); // Appliquer le repousser
+    particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
+    });
+    requestAnimationFrame(animateWithMouseEffect);
+}
+
+// Lancer l'animation avec effet de repousser
+animateWithMouseEffect();
