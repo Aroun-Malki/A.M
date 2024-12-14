@@ -109,36 +109,6 @@ body {
     opacity: 1;
 }
 
-/* Bouton pause */
-.pause-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #fff;
-    color: #000;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 3;
-    transition: all 0.3s;
-}
-
-.pause-button:hover {
-    background: #ddd;
-}
-
-/* Liens dans les info-text */
-.info-text a {
-    color: #fff;
-    text-decoration: underline;
-}
-
 /* Animation de fade-in avec slide */
 @keyframes fadeSlideIn {
     0% {
@@ -164,11 +134,10 @@ body {
     opacity: 0;
 }
 
-/* Animation pour le bouton pause */
-.pause-button {
-    animation: fadeSlideIn 1.5s ease-out forwards;
-    animation-delay: 1s; /* Délai pour qu'il apparaisse après les boutons principaux */
-    opacity: 0;
+/* Liens dans les info-text */
+.info-text a {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .particle-background canvas {
