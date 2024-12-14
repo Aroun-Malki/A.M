@@ -104,6 +104,7 @@ function openInstagram() {
 // Variables pour détecter la position de la souris
 let mouseX = 0;
 let mouseY = 0;
+let mouseClicked = false; // Variable pour savoir si le clic est effectué
 
 // Écouteur d'événement pour la position de la souris
 window.addEventListener("mousemove", (e) => {
@@ -111,8 +112,19 @@ window.addEventListener("mousemove", (e) => {
     mouseY = e.clientY;
 });
 
-// Fonction pour repousser les particules de la souris
+// Écouteur d'événement pour détecter le clic de souris
+window.addEventListener("mousedown", () => {
+    mouseClicked = true; // Le clic est effectué
+});
+
+window.addEventListener("mouseup", () => {
+    mouseClicked = false; // Le clic est relâché
+});
+
+// Fonction pour repousser les particules de la souris uniquement lors du clic
 function updateParticleDirection() {
+    if (!mouseClicked) return; // Ne pas appliquer l'effet si aucun clic
+
     particles.forEach((particle) => {
         // Calculer la direction de la souris par rapport à la particule
         let dx = particle.x - mouseX;
@@ -122,7 +134,7 @@ function updateParticleDirection() {
         // Créer un "effet de repousser" en ajustant la vitesse des particules
         if (distance < 150) { // Si la particule est proche de la souris
             let angle = Math.atan2(dy, dx);
-            let force = (150 - distance) / 500; // Réduit l'intensité du repousser
+            let force = (150 - distance) / 200; // Réduit l'intensité du repousser
             particle.speedX += Math.cos(angle) * force;
             particle.speedY += Math.sin(angle) * force;
         }
@@ -132,7 +144,7 @@ function updateParticleDirection() {
 // Mettre à jour les particules avec le mouvement de la souris
 function animateWithMouseEffect() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    updateParticleDirection(); // Appliquer le repousser
+    updateParticleDirection(); // Appliquer le repousser seulement si le clic est effectué
     particles.forEach((particle) => {
         particle.update();
         particle.draw();
